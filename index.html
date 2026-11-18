@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guia do Topo Amarelo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&family=JetBrains+Mono:wght@700;800&display=swap">
+<style>
+/* Layout: caderno de figurinhas. Uma coluna; cada passo é um cartão com contorno grosso e sombra dura, como adesivo colado na página. */
+:root{
+  --bg:#e8f0ff; --dots:#d3e0fb; --card:#ffffff; --ink:#1b2142; --muted:#56608a; --edge:#1b2142;
+  --pop:#ff4f6d; --sun:#ffcf1f; --chip:#f1f5ff; --note:#fff4c2; --note-ink:#3d3200; --grey:#c3c9d9;
+  --display:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Nunito", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121831; --dots:#1b2346; --card:#1d2547; --ink:#f2f4ff; --muted:#a8b1d8; --edge:#060914;
+  --pop:#ff6b85; --sun:#ffd84a; --chip:#27305a; --note:#3b3413; --note-ink:#ffe9a3; --grey:#5d6687; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121831; --dots:#1b2346; --card:#1d2547; --ink:#f2f4ff; --muted:#a8b1d8; --edge:#060914;
+  --pop:#ff6b85; --sun:#ffd84a; --chip:#27305a; --note:#3b3413; --note-ink:#ffe9a3; --grey:#5d6687; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(var(--dots) 2px,transparent 2.5px);background-size:26px 26px;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.page{max-width:1020px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--pop);font-weight:800}
+.card{background:var(--card);border:3px solid var(--edge);border-radius:22px;box-shadow:6px 6px 0 var(--edge);padding:24px}
+@media (max-width:560px){.card{padding:18px;border-radius:18px;box-shadow:4px 4px 0 var(--edge)}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(40px,7vw,74px);font-weight:800;letter-spacing:-.01em}
+.hero h1 .y{background:var(--sun);color:#1b2142;padding:0 .14em;border-radius:12px;border:3px solid var(--edge);display:inline-block;transform:rotate(-2deg)}
+.hero .lede{font-size:18px;color:var(--muted);max-width:44ch;margin-top:14px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badge{font-family:var(--display);font-weight:700;font-size:16px;padding:4px 14px;border-radius:999px;border:2.5px solid var(--edge);background:var(--card)}
+.badge b{color:var(--pop)}
+.mascot{position:relative;display:flex;justify-content:center}
+.mascot svg{width:min(300px,80%);height:auto;overflow:visible}
+.bubble{position:absolute;top:2%;left:0;max-width:170px;background:var(--card);border:3px solid var(--edge);border-radius:18px;padding:8px 12px;font-family:var(--display);font-weight:700;font-size:17px;line-height:1.15;box-shadow:3px 3px 0 var(--edge);transform:rotate(-4deg)}
+@media (max-width:760px){.bubble{left:4%}}
+
+.eyebrow{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--pop)}
+.sec-title{font-size:clamp(28px,4.2vw,40px);font-weight:800;margin-top:2px}
+.sec-sub{color:var(--muted);margin-top:6px;max-width:62ch}
+
+/* hold */
+.hold{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:640px){.hold{grid-template-columns:minmax(0,1fr);justify-items:center}}
+.hold svg{width:220px;height:auto;max-width:100%}
+.hold ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.hold li{display:flex;gap:10px;align-items:center;font-weight:700}
+.dot{width:22px;height:22px;border-radius:7px;border:2.5px solid var(--edge);flex:none}
+
+/* dictionary */
+.dict{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:18px}
+.mv{background:var(--chip);border:2.5px solid var(--edge);border-radius:16px;padding:10px 10px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;transition:transform .15s}
+.mv:hover{transform:rotate(-2deg) scale(1.03)}.mv:focus-visible{outline:3px solid var(--pop);outline-offset:3px}
+.mv svg{width:100%;max-width:120px;height:auto}
+.mv .lt{font-family:var(--mono);font-weight:800;font-size:26px;line-height:1}
+.mv .say{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.1}
+.mv .sub{font-size:12.5px;color:var(--muted);line-height:1.25}
+.mv.trap{background:var(--note)}
+.mv.trap .say,.mv.trap .sub,.mv.trap .lt{color:var(--note-ink)}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.mod{display:flex;gap:12px;align-items:center;border:2.5px dashed var(--edge);border-radius:16px;padding:12px 14px}
+.mod .k{font-family:var(--mono);font-weight:800;font-size:28px;min-width:2.2ch;text-align:center;color:var(--pop)}
+
+/* steps */
+.step{display:flex;flex-direction:column;gap:18px}
+.step-head{display:flex;gap:16px;align-items:center}
+.num{flex:none;width:64px;height:64px;border-radius:20px;border:3px solid var(--edge);background:var(--sun);color:#1b2142;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:40px;line-height:1;transform:rotate(-6deg);box-shadow:3px 3px 0 var(--edge)}
+.step:nth-of-type(2n) .num{transform:rotate(5deg)}
+.goal{color:var(--muted);font-weight:700;margin-top:4px}
+.label{font-family:var(--display);font-weight:800;font-size:19px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px}
+.case{display:flex;flex-direction:column;align-items:center;gap:4px;width:132px;text-align:center}
+.case svg{width:112px;height:auto}
+.case .cn{font-family:var(--display);font-weight:800;font-size:18px;line-height:1.05}
+.case .cd{font-size:13px;color:var(--muted);line-height:1.25}
+.go{display:flex;flex-direction:column;align-items:center;font-family:var(--mono);font-weight:800;font-size:12px;color:var(--pop);min-width:44px;text-align:center}
+.go svg{width:42px;height:20px}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.cases .case{width:auto;background:var(--chip);border:2.5px solid var(--edge);border-radius:16px;padding:10px}
+
+.alg{display:flex;flex-wrap:wrap;gap:12px}
+.grp{border:2.5px dashed var(--muted);border-radius:18px;padding:8px 8px 10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.grp .nick{font-family:var(--display);font-weight:700;font-size:14px;color:var(--muted);padding-left:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{width:78px;background:var(--chip);border:2.5px solid var(--edge);border-radius:14px;padding:4px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:0;cursor:default}
+.chip svg{width:60px;height:auto}
+.chip .lt{font-family:var(--mono);font-weight:800;font-size:20px;line-height:1.05}
+.chip .say{font-size:11.5px;font-weight:800;line-height:1.15;text-align:center;color:var(--muted)}
+.challenge .chip .lt,.challenge .chip .say{filter:blur(7px);transition:filter .2s}
+.challenge .chip:hover .lt,.challenge .chip:hover .say,.challenge .chip.peek .lt,.challenge .chip.peek .say{filter:none}
+.challenge .chip{cursor:pointer}
+.code{font-family:var(--mono);font-weight:800;font-size:17px;background:var(--chip);border:2.5px solid var(--edge);border-radius:12px;padding:8px 12px;display:inline-block;word-break:break-word}
+
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.tip{background:var(--note);color:var(--note-ink);border:2.5px solid var(--edge);border-radius:16px;padding:12px 14px;font-weight:700;font-size:15px;position:relative}
+.tip:nth-child(odd){transform:rotate(-.6deg)}
+.tip:nth-child(even){transform:rotate(.6deg)}
+.tip strong{font-family:var(--display);font-size:17px;display:block;margin-bottom:2px}
+
+.done{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:17px;cursor:pointer;align-self:flex-start;border:2.5px solid var(--edge);border-radius:999px;padding:6px 16px 6px 8px;background:var(--chip);user-select:none}
+.done input{position:absolute;opacity:0;width:1px;height:1px}
+.done .star{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;border:2.5px solid var(--edge);background:var(--card);font-size:16px;line-height:1;transition:transform .25s}
+.done input:checked + .star{background:var(--sun);transform:rotate(144deg) scale(1.1)}
+.done:has(input:focus-visible){outline:3px solid var(--pop);outline-offset:3px}
+
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:3px solid var(--edge);border-radius:999px;padding:8px 10px 8px 18px;box-shadow:4px 4px 0 var(--edge)}
+.toolbar .prog{font-family:var(--display);font-weight:800;font-size:17px}
+.toolbar .prog span{color:var(--pop)}
+.btn{font-family:var(--display);font-weight:800;font-size:16px;border:2.5px solid var(--edge);border-radius:999px;padding:6px 16px;background:var(--sun);color:#1b2142;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--pop);color:#fff}
+button:focus-visible,a:focus-visible{outline:3px solid var(--pop);outline-offset:3px}
+
+/* cheat sheet */
+.sheet{overflow-x:auto;margin-top:14px}
+.sheet table{border-collapse:separate;border-spacing:0 8px;width:100%;min-width:620px}
+.sheet td,.sheet th{text-align:left;padding:10px 12px;vertical-align:middle}
+.sheet th{font-family:var(--display);font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-block:0}
+.sheet tbody td{background:var(--chip);border-block:2.5px solid var(--edge)}
+.sheet tbody td:first-child{border-left:2.5px solid var(--edge);border-radius:14px 0 0 14px;font-family:var(--display);font-weight:800;font-size:22px;text-align:center}
+.sheet tbody td:last-child{border-right:2.5px solid var(--edge);border-radius:0 14px 14px 0}
+.sheet .m{font-family:var(--mono);font-weight:800;font-size:16px;white-space:nowrap}
+.foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+
+@media (max-width:560px){.flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px}.flow .go{display:none}.flow .case{width:auto}.chip{width:70px}}
+.open3d{cursor:pointer;background:var(--sun);color:#1b2142}
+
+
+/* meu cubo: editor do topo + diagnóstico */
+.my{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:24px;align-items:start;margin-top:18px}
+@media (max-width:760px){.my{grid-template-columns:minmax(0,1fr)}}
+.my-left{display:flex;flex-direction:column;gap:12px;align-items:center}
+.pal{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sw{width:40px;height:40px;border-radius:12px;border:2.5px solid var(--edge);cursor:pointer;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink);background:var(--card);transition:transform .12s}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--card),0 0 0 6px var(--pop);transform:translateY(-2px)}
+.board-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.blab{font-weight:800;font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.board{display:grid;grid-template-columns:16px 28px repeat(3,48px) 28px 16px;grid-template-rows:16px 28px repeat(3,48px) 28px 16px;gap:4px}
+.tile{border:2.5px solid var(--edge);border-radius:10px;padding:0;cursor:pointer;background:var(--grey)}
+.tile.side{border-radius:7px}
+.tile.empty{background:repeating-linear-gradient(45deg,var(--chip) 0 4px,var(--grey) 4px 7px)}
+.tile:disabled{cursor:default}
+.tile:focus-visible,.sw:focus-visible,.fc:focus-visible,.tool:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+.cdot{width:14px;height:14px;border-radius:50%;border:2px solid var(--edge);place-self:center}
+.fronts-row{display:flex;flex-direction:column;align-items:center;gap:6px}
+.fronts{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.mini{font-weight:800;font-size:13.5px;color:var(--muted);text-align:center}
+.fc{display:flex;align-items:center;gap:6px;border:2.5px solid var(--edge);border-radius:999px;padding:3px 10px 3px 4px;background:var(--chip);font-family:var(--body);font-weight:800;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.fc i{width:18px;height:18px;border-radius:50%;border:2px solid var(--edge);display:block}
+.fc[aria-pressed="true"]{background:var(--sun);color:#1b2142}
+.my-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tool{font-family:var(--display);font-weight:800;font-size:15px;border:2.5px solid var(--edge);border-radius:999px;padding:5px 14px;background:var(--chip);color:var(--ink);cursor:pointer}
+.diag{display:flex;flex-direction:column;gap:12px;min-width:0}
+.counts{display:flex;flex-wrap:wrap;gap:6px}
+.cnt{display:flex;align-items:center;gap:5px;font-weight:800;font-size:13px;border:2px solid var(--edge);border-radius:999px;padding:2px 9px 2px 4px;background:var(--chip)}
+.cnt i{width:14px;height:14px;border-radius:50%;border:2px solid var(--edge);display:block}
+.cnt.bad{background:var(--note);color:var(--note-ink)}
+.hint{color:var(--muted);font-weight:700}
+.warn{background:var(--note);color:var(--note-ink);border:2.5px solid var(--edge);border-radius:16px;padding:12px 14px;font-weight:700}
+.nextcard{border:3px solid var(--edge);border-radius:18px;padding:14px 16px;background:var(--chip);display:flex;flex-direction:column;gap:8px;box-shadow:4px 4px 0 var(--edge);align-items:flex-start}
+.nextcard h3{font-size:26px}
+.nextcard p:not(.eyebrow){font-weight:700}
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.later{margin:6px 0 0;padding-left:22px;display:grid;gap:6px;color:var(--muted);font-weight:700;font-size:14px}
+.later .m{font-family:var(--mono);font-weight:800;color:var(--ink);font-size:13px;word-break:break-word}
+
+.check{margin:0;padding:0;list-style:none;counter-reset:ck;display:grid;gap:8px}
+.check li{counter-increment:ck;display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;background:var(--chip);border:2.5px solid var(--edge);border-radius:14px;padding:8px 12px 8px 8px}
+.check li::before{content:counter(ck);width:30px;height:30px;border-radius:50%;background:var(--sun);color:#1b2142;border:2.5px solid var(--edge);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:17px;line-height:1}
+.count{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.count div{background:var(--chip);border:2.5px solid var(--edge);border-radius:14px;padding:10px;text-align:center;display:flex;flex-direction:column}
+.count b{font-family:var(--display);font-size:19px;line-height:1.1}
+.count span{font-weight:800;color:var(--pop)}
+.chant{background:var(--note);color:var(--note-ink);border:2.5px dashed var(--edge);border-radius:14px;padding:10px 14px;font-weight:700}
+.chant b{font-family:var(--display);font-size:18px}
+.chant span{opacity:.5;margin:0 4px}
+.chant small{font-size:13.5px;font-weight:700;display:block;margin-top:4px}
+.examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.ex{background:var(--chip);border:2.5px solid var(--edge);border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.ex svg{width:112px;height:auto}
+.ex .cn{font-family:var(--display);font-weight:800;font-size:18px;line-height:1.1}
+.ex .cd{font-size:13.5px;color:var(--muted);line-height:1.3}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px}
+.pill{font-family:var(--mono);font-weight:800;font-size:14px;padding:3px 9px;border-radius:999px;border:2px solid var(--edge);background:var(--card)}
+.pill small{font-family:var(--body);font-size:11px;color:var(--muted)}
+.pill.sune{background:var(--sun);color:#1b2142;font-family:var(--display)}
+.then{font-weight:800;color:var(--muted)}
+@media (max-width:480px){.count{grid-template-columns:minmax(0,1fr)}}
+@keyframes march{to{stroke-dashoffset:-24}}
+.flowline{stroke-dasharray:6 6;animation:march 1.2s linear infinite}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.55}}
+.spot{transform-box:fill-box;transform-origin:center;animation:pulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.flowline,.spot{animation:none}.mv:hover{transform:none}}
+</style>
+
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="page">
+
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Guia ilustrado · método de 4 passos</p>
+      <h1>Bora fechar o <span class="y">topo amarelo</span></h1>
+      <p class="lede">Para quem já monta as duas camadas de baixo. Aqui está o resto, desenhado giro por giro, com o amarelo em cima e o verde de frente para você.</p>
+      <div class="badges">        <button class="badge open3d" type="button" id="goMeu">🎨 Informar meu cubo</button>
+        <span class="badge"><b>4</b> passos</span>
+        <span class="badge"><b>5</b> algoritmos</span>
+        <span class="badge"><b>1</b> cubo resolvido</span>
+      </div>
+    </div>
+    <div class="mascot">
+      <div class="bubble">Psiu! Só 5 algoritmos e eu fico lindo.</div>
+      <svg id="mascot" viewBox="-78 -80 156 160" role="img" aria-label="Cubo sorridente com o topo amarelo"></svg>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <span class="prog">Decorados: <span id="count">0</span> de 5 ⭐</span>
+    <button class="btn" id="challenge" type="button" aria-pressed="false">Modo desafio: esconder letras</button>
+  </div>
+
+  <section class="card">
+    <p class="eyebrow">Antes de tudo</p>
+    <h2 class="sec-title">Segure assim e não solte</h2>
+    <div class="hold">
+      <svg id="hold" viewBox="-78 -80 156 160" role="img" aria-label="Cubo com amarelo em cima, verde na frente e laranja à direita"></svg>
+      <div>
+        <p class="sec-sub">Os algoritmos contam com o cubo parado na mão. Você gira as camadas e o cubo fica onde está. Para posicionar algo nos passos 1 a 3, gire só o topo. A única exceção é o passo 4: lá você vira o cubo inteiro, com o amarelo sempre em cima, e a frente pode deixar de ser verde.</p>
+        <ul>
+          <li><span class="dot" style="background:#ffd92e"></span>Amarelo em cima: é o <b>U</b> (Up)</li>
+          <li><span class="dot" style="background:#1dcc6c"></span>Verde olhando para você: é a <b>F</b> (Front)</li>
+          <li><span class="dot" style="background:#ff761a"></span>Laranja à sua direita: é a <b>R</b> (Right)</li>
+          <li><span class="dot" style="background:#f02630"></span>Vermelho à sua esquerda: é a <b>L</b> (Left)</li>
+          <li><span class="dot" style="background:#1c95eb"></span>Azul lá atrás: é a <b>B</b> (Back)</li>
+          <li><span class="dot" style="background:#f4f4f4"></span>Branco embaixo: é o <b>D</b> (Down)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="meu">
+    <p class="eyebrow">Opcional · diagnóstico</p>
+    <h2 class="sec-title">Em que passo está o seu cubo?</h2>
+    <p class="sec-sub">Segure com o amarelo em cima e pinte o que você vê: o topo e a fileira de cima de cada lado. Escolha a cor no pincel e toque nos quadrados. A página mostra em que passo você está e qual o próximo movimento.</p>
+    <div class="my">
+      <div class="my-left">
+        <div class="pal" id="pal" role="group" aria-label="Cor do pincel"></div>
+        <div class="board-wrap"><span class="blab">ATRÁS</span><div class="board" id="board"></div><span class="blab">FRENTE (VOCÊ)</span></div>
+        <div class="fronts-row"><span class="mini">Cor do centro da frente</span><div class="fronts" id="fronts" role="group" aria-label="Cor do centro da frente"></div><span class="mini" id="myFrontInfo"></span></div>
+        <div class="my-tools"><button class="tool" type="button" id="myEx">Carregar exemplo</button><button class="tool" type="button" id="myClear">Limpar</button></div>
+      </div>
+      <div class="diag" id="diag" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <p class="eyebrow">Dicionário de giros</p>
+    <h2 class="sec-title">Cada letra, uma camada</h2>
+    <p class="sec-sub">A camada colorida é a que gira; a seta mostra para onde. Sem apóstrofo, o giro é horário olhando de frente para aquela face. Com apóstrofo, é o contrário.</p>
+    <div class="dict" id="dict"></div>
+    <div class="mods">
+      <div class="mod"><span class="k">'</span><span>Apóstrofo (lê-se “linha”): o mesmo giro, ao contrário. <b>R'</b> desfaz o <b>R</b>.</span></div>
+      <div class="mod"><span class="k">2</span><span>Meia-volta (180°). Tanto faz o sentido: <b>U2</b> = <b>U U</b>.</span></div>
+    </div>
+  </section>
+
+  <section class="card step" id="s1"></section>
+  <section class="card step" id="s2"></section>
+  <section class="card step" id="s3"></section>
+  <section class="card step" id="s4"></section>
+
+  <section class="card">
+    <p class="eyebrow">Folha de cola</p>
+    <h2 class="sec-title">Tudo num lugar só</h2>
+    <div class="sheet">
+      <table>
+        <thead><tr><th>Passo</th><th>Quando usar</th><th>Algoritmo</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Ponto, “L” apontando para trás e para a esquerda, ou linha deitada</td><td class="m">F R U R' U' F'</td></tr>
+          <tr><td>2</td><td>Peixinho na frente-esquerda (ou as regras de 0 e 2 quinas)</td><td class="m">R U R' U R U2 R'</td></tr>
+          <tr><td>3</td><td>Faróis atrás (sem faróis: em qualquer posição)</td><td class="m">R' F R' B2 R F' R' B2 R2</td></tr>
+          <tr><td>4</td><td>Face completa atrás; meio da frente com a cor da direita (anti-horário)</td><td class="m">R U' R U R U R U' R' U' R2</td></tr>
+          <tr><td>4</td><td>Face completa atrás; meio da frente com a cor da esquerda (horário)</td><td class="m">R2 U R U R' U' R' U' R' U R'</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="foot">
+    
+  </div>
+</div>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+const C={y:"#ffd92e",r:"#f02630",b:"#1c95eb",o:"#ff761a",g:"#1dcc6c",w:"#f4f4f4",n:"#b9bfcf"};
+const S=19;
+const P=(x,y,z)=>[(x-z)*0.866*S,(-y+(x+z)*0.5)*S];
+const pts=a=>a.map(p=>P(...p).map(v=>v.toFixed(1)).join(",")).join(" ");
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e;}
+
+/* ---------- isometric cube with a highlighted layer and an arrow ---------- */
+const MOVES={
+ "R":{ax:"x",l:1,path:[[1,-1.2,1.5],[1,1.5,1.5],[1,1.5,-0.8]]},
+ "L":{ax:"x",l:-1,path:[[-1,1.5,-0.8],[-1,1.5,1.5],[-1,-1.2,1.5]]},
+ "U":{ax:"y",l:1,path:[[1.5,1,-1.2],[1.5,1,1.5],[-1.2,1,1.5]]},
+ "D":{ax:"y",l:-1,path:[[-1.2,-1,1.5],[1.5,-1,1.5],[1.5,-1,-1.2]]},
+ "F":{ax:"z",l:1,arc:true},
+ "B":{ax:"z",l:-1,path:[[1.5,-1.2,-1],[1.5,1.5,-1],[-1.2,1.5,-1]]}
+};
+function arcPath(cw){const a=[];for(let i=0;i<=24;i++){const t=(150-i*11.25)*Math.PI/180;a.push([Math.cos(t)*1.05,Math.sin(t)*1.05,1.5]);}return cw?a:a.reverse();}
+function movePath(m){const f=m[0],mod=m.slice(1),d=MOVES[f];let p=d.arc?arcPath(true):d.path.slice();if(mod==="'")p=p.slice().reverse();return p;}
+
+function drawCube(svg,opt){
+  opt=opt||{};
+  const g=el("g",{},svg);
+  const faces={
+    U:{c:C.y,cell:(a,b)=>[a,1.5,b],cub:(a,b)=>({x:a,y:1,z:b}),q:(a,b,h)=>[[a-h,1.5,b-h],[a+h,1.5,b-h],[a+h,1.5,b+h],[a-h,1.5,b+h]]},
+    F:{c:C.g,cub:(a,b)=>({x:a,y:b,z:1}),q:(a,b,h)=>[[a-h,b-h,1.5],[a+h,b-h,1.5],[a+h,b+h,1.5],[a-h,b+h,1.5]]},
+    R:{c:C.o,cub:(a,b)=>({x:1,y:b,z:a}),q:(a,b,h)=>[[1.5,b-h,a-h],[1.5,b-h,a+h],[1.5,b+h,a+h],[1.5,b+h,a-h]]}
+  };
+  for(const f in faces){el("polygon",{points:pts(faces[f].q(0,0,1.53)),fill:"#20232c",stroke:"#20232c","stroke-width":4,"stroke-linejoin":"round"},g);}
+  const layer=opt.move?MOVES[opt.move[0]]:null;
+  for(const f in faces){const F=faces[f];
+    for(const a of[-1,0,1])for(const b of[-1,0,1]){
+      const cub=F.cub(a,b);const on=!layer||cub[layer.ax]===layer.l;
+      el("polygon",{points:pts(F.q(a,b,0.4)),fill:on?F.c:"#555b6c",stroke:on?F.c:"#555b6c","stroke-width":3.5,"stroke-linejoin":"round"},g);
+    }}
+  if(opt.face){ // cute face on the front
+    const eye=(x)=>{const[cx,cy]=P(x,0.25,1.5);el("ellipse",{cx,cy,rx:6.2,ry:7.4,fill:"#fff",stroke:"#20232c","stroke-width":2.2},g);el("circle",{cx:cx+1.2,cy:cy+1.5,r:3.2,fill:"#20232c"},g);el("circle",{cx:cx+2.4,cy:cy,r:1.1,fill:"#fff"},g);};
+    eye(-0.55);eye(0.55);
+    const[a1,b1]=P(-0.5,-0.55,1.5),[a2,b2]=P(0.5,-0.55,1.5),[ac,bc]=P(0,-0.95,1.5);
+    el("path",{d:`M${a1} ${b1} Q${ac} ${bc+4} ${a2} ${b2}`,fill:"none",stroke:"#20232c","stroke-width":3,"stroke-linecap":"round"},g);
+    const[k1,l1]=P(-1.05,-0.35,1.5),[k2,l2]=P(1.05,-0.35,1.5);
+    el("ellipse",{cx:k1,cy:l1,rx:5,ry:3,fill:"#ff9fb0","fill-opacity":.8},g);el("ellipse",{cx:k2,cy:l2,rx:5,ry:3,fill:"#ff9fb0","fill-opacity":.8},g);
+  }
+  if(opt.move){
+    const p=movePath(opt.move).map(q=>P(...q));
+    const d="M"+p.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" L");
+    el("path",{d,fill:"none",stroke:"#fff","stroke-width":opt.small?8:9,"stroke-linecap":"round","stroke-linejoin":"round"},g);
+    el("path",{d,fill:"none",stroke:"#14182b","stroke-width":opt.small?4:4.5,"stroke-linecap":"round","stroke-linejoin":"round"},g);
+    const e=p[p.length-1],s=p[p.length-2];let dx=e[0]-s[0],dy=e[1]-s[1];const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+    const h=opt.small?9:9;const tip=[e[0]+dx*h*.8,e[1]+dy*h*.8],bl=[e[0]-dx*h*.4-dy*h*.75,e[1]-dy*h*.4+dx*h*.75],br=[e[0]-dx*h*.4+dy*h*.75,e[1]-dy*h*.4-dx*h*.75];
+    const tri=[tip,bl,br].map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" ");
+    el("polygon",{points:tri,fill:"#14182b",stroke:"#fff","stroke-width":2.5,"stroke-linejoin":"round"},g);
+    if(opt.move.endsWith("2")){
+      const bx=el("g",{},g);el("circle",{cx:52,cy:-58,r:15,fill:"#ff4f6d",stroke:"#14182b","stroke-width":3},bx);
+      const t=el("text",{x:52,y:-52.5,"text-anchor":"middle","font-family":"JetBrains Mono, monospace","font-weight":800,"font-size":15,fill:"#fff"},bx);t.textContent="×2";
+    }
+  }
+}
+function cubeSVG(move,small){const s=el("svg",{viewBox:"-72 -76 144 152","aria-hidden":"true"});drawCube(s,{move,small});return s;}
+
+drawCube(document.getElementById("mascot"),{face:true});
+drawCube(document.getElementById("hold"),{});
+
+/* ---------- words ---------- */
+const SAY={
+ "R":["direita sobe","horário, olhando a face da direita"],"R'":["direita desce","anti-horário, olhando a face da direita"],"R2":["direita meia-volta","dois giros"],
+ "L":["esquerda desce","horário, olhando a face da esquerda"],"L'":["esquerda sobe","anti-horário, olhando a face da esquerda"],
+ "U":["topo p/ esquerda","horário, olhando de cima"],"U'":["topo p/ direita","anti-horário, olhando de cima"],"U2":["topo meia-volta","dois giros"],
+ "D":["base p/ direita","horário, olhando de baixo"],"D'":["base p/ esquerda","anti-horário, olhando de baixo"],
+ "F":["frente horário","como um relógio"],"F'":["frente anti-horário","relógio ao contrário"],
+ "B":["trás: topo p/ esquerda","horário olhando de trás; de frente parece anti-horário"],"B'":["trás: topo p/ direita","anti-horário olhando de trás; de frente parece horário"],"B2":["trás meia-volta","sentido não importa"]
+};
+
+const dict=document.getElementById("dict");
+["R","R'","L","L'","U","U'","D","D'","F","F'","B","B'"].forEach(m=>{
+  const d=document.createElement("div");d.className="mv"+(m[0]==="B"?" trap":"");
+  d.appendChild(cubeSVG(m));
+  d.insertAdjacentHTML("beforeend",`<span class="lt">${m}</span><span class="say">${SAY[m][0]}</span><span class="sub">${m[0]==="B"?"Pegadinha: ":""}${SAY[m][1]}</span>`);
+  dict.appendChild(d);
+});
+
+/* ---------- top view diagrams ---------- */
+// top: 9 codes row-major from back(row0) to front(row2), left->right. sides: f,b (left->right as seen from above), l,r (back->front).
+// codes: y yellow, n not-yellow, q irrelevant, r b o g colors
+function topSVG(spec){
+  const s=el("svg",{viewBox:"0 0 104 132",role:"img","aria-label":spec.alt||"Topo do cubo visto de cima"});
+  const ox=16,oy=28,c=22,gp=3,span=3*c+2*gp;
+  const defs=el("defs",{},s);const pat=el("pattern",{id:"hatch"+(topSVG.n=(topSVG.n||0)+1),width:5,height:5,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
+  el("rect",{width:5,height:5,fill:"#dfe3ee"},pat);el("rect",{width:2,height:5,fill:"#c4cada"},pat);
+  const hid="url(#hatch"+topSVG.n+")";
+  const fill=k=>k==="q"?hid:({y:C.y,n:C.n,r:C.r,b:C.b,o:C.o,g:C.g})[k];
+  el("rect",{x:ox-4,y:oy-4,width:span+8,height:span+8,rx:6,fill:"#20232c"},s);
+  const pos=(i,j)=>[ox+j*(c+gp),oy+i*(c+gp)];
+  spec.top.forEach((k,idx)=>{const i=Math.floor(idx/3),j=idx%3;const[x,y]=pos(i,j);el("rect",{x,y,width:c,height:c,rx:4.5,fill:fill(k)},s);});
+  const side=(arr,fn)=>arr&&arr.forEach((k,i)=>{const r=fn(i);el("rect",{...r,rx:2.5,fill:fill(k),stroke:"#20232c","stroke-width":1.4},s);});
+  side(spec.b,i=>({x:ox+i*(c+gp),y:oy-13,width:c,height:7}));
+  side(spec.f,i=>({x:ox+i*(c+gp),y:oy+span+6,width:c,height:7}));
+  side(spec.l,i=>({x:ox-13,y:oy+i*(c+gp),width:7,height:c}));
+  side(spec.r,i=>({x:ox+span+6,y:oy+i*(c+gp),width:7,height:c}));
+  const lab=(t,y)=>{const e=el("text",{x:52,y,"text-anchor":"middle","font-family":"Nunito, sans-serif","font-weight":800,"font-size":8.5,fill:"currentColor","letter-spacing":".08em"},s);e.textContent=t;};
+  lab("ATRÁS",10);lab("FRENTE (VOCÊ)",128);
+  (spec.spot||[]).forEach(sp=>{let cx,cy,r=15;
+    if(sp[0]==="t"){const[x,y]=pos(Math.floor(sp[1]/3),sp[1]%3);cx=x+c/2;cy=y+c/2;}
+    else if(sp[0]==="f"){cx=ox+sp[1]*(c+gp)+c/2;cy=oy+span+9.5;r=12;}
+    else if(sp[0]==="l"){cx=ox-9.5;cy=oy+sp[1]*(c+gp)+c/2;r=12;}
+    else if(sp[0]==="b"){cx=ox+sp[1]*(c+gp)+c/2;cy=oy-9.5;r=12;}
+    el("circle",{cx,cy,r,fill:"none",stroke:"#ff4f6d","stroke-width":3,class:"spot"},s);});
+  if(spec.cycle){
+    const ctr={f:[ox+span/2,oy+span-c/2],r:[ox+span-c/2,oy+span/2],l:[ox+c/2,oy+span/2]};
+    const mk=el("marker",{id:"ah"+topSVG.n,viewBox:"0 0 10 10",refX:6,refY:5,markerWidth:4,markerHeight:4,orient:"auto"},defs);
+    el("path",{d:"M0 0 L10 5 L0 10 z",fill:"#14182b",stroke:"#fff","stroke-width":1.5},mk);
+    const seq=spec.cycle;
+    for(let i=0;i<3;i++){const a=ctr[seq[i]],b=ctr[seq[(i+1)%3]];
+      const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;const vx=mx-(ox+span/2),vy=my-(oy+span/2);
+      const qx=mx+vx*0.25,qy=my+vy*0.25+(seq[i]==="r"&&seq[(i+1)%3]==="l"||seq[i]==="l"&&seq[(i+1)%3]==="r"?-12:0);
+      const sx=a[0]+(b[0]-a[0])*0.18,sy=a[1]+(b[1]-a[1])*0.18,ex=a[0]+(b[0]-a[0])*0.8,ey=a[1]+(b[1]-a[1])*0.8;
+      const d=`M${sx} ${sy} Q${qx} ${qy} ${ex} ${ey}`;
+      el("path",{d,fill:"none",stroke:"#fff","stroke-width":5.5,"stroke-linecap":"round"},s);
+      el("path",{d,fill:"none",stroke:"#14182b","stroke-width":2.6,"stroke-linecap":"round","marker-end":`url(#ah${topSVG.n})`},s);}
+  }
+  return s;
+}
+const arrowSVG=()=>'<svg viewBox="0 0 42 20" aria-hidden="true"><path class="flowline" d="M2 10 H32" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 3 L40 10 L30 17 z" fill="currentColor"/></svg>';
+
+/* ---------- algorithm strip ---------- */
+function algHTML(groups){
+  const wrap=document.createElement("div");wrap.className="alg";
+  groups.forEach(([seq,nick])=>{
+    const g=document.createElement("div");g.className="grp";
+    g.insertAdjacentHTML("beforeend",`<span class="nick">${nick}</span>`);
+    const chips=document.createElement("div");chips.className="chips";
+    seq.split(" ").forEach(m=>{const c=document.createElement("div");c.className="chip";c.tabIndex=0;
+      c.appendChild(cubeSVG(m,true));c.insertAdjacentHTML("beforeend",`<span class="lt">${m}</span><span class="say">${SAY[m][0]}</span>`);
+      c.addEventListener("click",()=>c.classList.toggle("peek"));chips.appendChild(c);});
+    g.appendChild(chips);wrap.appendChild(g);
+  });
+
+  return wrap;
+}
+function caseEl(spec,name,desc){const d=document.createElement("div");d.className="case";d.appendChild(topSVG(spec));d.insertAdjacentHTML("beforeend",`<span class="cn">${name}</span><span class="cd">${desc}</span>`);return d;}
+function goEl(t){const d=document.createElement("div");d.className="go";d.innerHTML=arrowSVG()+`<span>${t}</span>`;return d;}
+
+let doneState={};try{doneState=JSON.parse(localStorage.getItem("topo-decorados")||"{}")}catch(e){}
+function updateCount(){document.getElementById("count").textContent=Object.values(doneState).filter(Boolean).length;}
+function doneEl(key,label){
+  const l=document.createElement("label");l.className="done";
+  l.innerHTML=`<input type="checkbox" id="done-${key}"${doneState[key]?" checked":""}><span class="star">★</span>${label}`;
+  l.querySelector("input").addEventListener("change",e=>{doneState[key]=e.target.checked;try{localStorage.setItem("topo-decorados",JSON.stringify(doneState))}catch(_){}updateCount();});
+  return l;
+}
+function head(sec,n,title,goal){sec.insertAdjacentHTML("beforeend",`<div class="step-head"><div class="num">${n}</div><div><h2 class="sec-title">${title}</h2><p class="goal">${goal}</p></div></div>`);}
+function label(sec,t){sec.insertAdjacentHTML("beforeend",`<p class="label">${t}</p>`);}
+function tips(sec,list){const d=document.createElement("div");d.className="tips";d.innerHTML=list.map(([h,t])=>`<div class="tip"><strong>${h}</strong>${t}</div>`).join("");sec.appendChild(d);}
+
+const q="q",n="n",y="y";
+/* Step 1 */
+(function(){const s=document.getElementById("s1");
+  head(s,"1","A cruz amarela","Objetivo: um “+” amarelo no topo. Ignore as quinas por enquanto (as listradas).");
+  label(s,"Como reconhecer e posicionar");
+  const f=document.createElement("div");f.className="flow";
+  f.append(
+    caseEl({top:[q,n,q,n,y,n,q,n,q]},"Ponto","Só o centro amarelo. Faça o algoritmo em qualquer posição."),goEl("faça"),
+    caseEl({top:[q,y,q,y,y,n,q,n,q],spot:[["t",1],["t",3]]},"“L”","Gire o topo até o L apontar para trás e para a esquerda."),goEl("faça"),
+    caseEl({top:[q,n,q,y,y,y,q,n,q]},"Linha","Deitada, da esquerda para a direita."),goEl("faça"),
+    caseEl({top:[q,y,q,y,y,y,q,y,q]},"Cruz!","Passo 1 fechado.")
+  );s.appendChild(f);
+  label(s,"O algoritmo: <span class=\"code\">F R U R' U' F'</span>");
+  s.appendChild(algHTML([["F","abre a porta"],["R U R' U'","o vai-e-vem"],["F'","fecha a porta"]]));
+  tips(s,[["É um sanduíche","F e F' são o pão. O vai-e-vem R U R' U' é o recheio, e ele aparece em muitos algoritmos."],["Fale em voz alta","“Frente horário. Direita sobe, topo esquerda, direita desce, topo direita. Frente anti-horário.”"]]);
+  s.appendChild(doneEl("a1","Já decorei o passo 1"));
+})();
+/* Step 2 */
+(function(){const s=document.getElementById("s2");
+  const SUNE="R U R' U R U2 R'";
+  head(s,"2","O topo todo amarelo","Objetivo: a face de cima 100% amarela. É um algoritmo só, o Sune, repetido de 1 a 3 vezes.");
+  label(s,"Antes de cada Sune, faça este check");
+  s.insertAdjacentHTML("beforeend",`<ol class="check">
+    <li><span><b>A cruz amarela está inteira?</b> Se não estiver, volte para o passo 1.</span></li>
+    <li><span><b>Conte as quinas com amarelo para cima:</b> 0, 1 ou 2.</span></li>
+    <li><span><b>Gire só o topo (U)</b> até a quina da frente-esquerda ficar como no desenho do seu caso. A face da frente continua a mesma.</span></li>
+    <li><span><b>Faça um Sune</b> e volte para o item 1. Não repita o Sune sem olhar: a cada um, o caso muda.</span></li>
+  </ol>`);
+  label(s,"Onde deixar a quina da frente-esquerda");
+  const c=document.createElement("div");c.className="cases";
+  c.append(
+    caseEl({top:[n,y,n,y,y,y,y,y,n],l:[q,n,q],f:[q,n,q],spot:[["t",6]]},"1 quina: o peixinho","A quina com amarelo em cima vai na frente-esquerda, o canto mais perto da sua mão esquerda."),
+    caseEl({top:[n,y,n,y,y,y,n,y,n],l:[q,n,y],spot:[["l",2]]},"0 quinas","Gire o topo até a quina da frente-esquerda mostrar o amarelo na face da esquerda."),
+    caseEl({top:[q,y,q,y,y,y,n,y,q],f:[y,n,q],spot:[["f",0]]},"2 quinas","Gire o topo até a quina da frente-esquerda mostrar o amarelo para você, na face da frente.")
+  );s.appendChild(c);
+  label(s,"Quantos Sunes esperar");
+  s.insertAdjacentHTML("beforeend",`<div class="count">
+    <div><b>1 quina</b><span>1 ou 2 Sunes</span></div>
+    <div><b>0 quinas</b><span>2 Sunes</span></div>
+    <div><b>2 quinas</b><span>3 Sunes</span></div>
+  </div>
+  <p class="warn">Fez mais de 3 Sunes e o topo não fechou? Algum giro saiu trocado ou faltou reposicionar. Veja “Não fecha? Confira” no fim deste passo.</p>`);
+  label(s,"O algoritmo: <span class=\"code\">R U R' U R U2 R'</span>");
+  s.appendChild(algHTML([["R U R' U","sobe, esquerda, desce, esquerda"],["R U2 R'","sobe, esquerda, esquerda, desce"]]));
+  s.insertAdjacentHTML("beforeend",`<p class="chant">Cante no ritmo: <b>sobe · esquerda · desce · esquerda</b> <span>|</span> <b>sobe · esquerda, esquerda · desce</b><br><small>No Sune o topo só gira para a esquerda. A direita alterna: sobe, desce, sobe, desce.</small></p>`);
+  label(s,"Exemplos do começo ao fim");
+  const ex=document.createElement("div");ex.className="examples";
+  const mk=(spec,name,desc,steps,setup)=>{const d=document.createElement("div");d.className="ex";d.appendChild(topSVG(spec));
+    d.insertAdjacentHTML("beforeend",`<span class="cn">${name}</span><span class="cd">${desc}</span><div class="pills">${steps.map(t=>t==="Sune"?'<span class="pill sune">Sune</span>':`<span class="pill">${t} <small>${SAY[t][0]}</small></span>`).join('<span class="then">→</span>')}</div>`);
+    return d;};
+  ex.append(
+    mk({top:["n","y","n","y","y","y","y","y","n"],b:["y","n","n"],f:["n","n","y"],l:["n","n","n"],r:["y","n","n"],spot:[["t",6]]},"Peixinho que fecha de primeira","Já posicionado: um Sune e pronto.",["Sune"],"R U2 R' U' R U' R'"),
+    mk({top:["n","y","n","y","y","y","y","y","n"],b:["n","n","y"],f:["n","n","n"],l:["y","n","n"],r:["n","n","y"],spot:[["t",6]]},"Peixinho que volta","Depois do Sune aparece outro peixinho. É normal: reposicione e faça de novo.",["Sune","U2","Sune"],"R U R' U R U2 R' U2"),
+    mk({top:["n","y","n","y","y","y","n","y","n"],b:["n","n","n"],f:["n","n","n"],l:["y","n","y"],r:["y","n","y"],spot:[["l",2]]},"0 quinas","O primeiro Sune cria um peixinho já no lugar.",["Sune","Sune"],"R U R' U R U2 R' R U R' U R U2 R' U"),
+    mk({top:["y","y","y","y","y","y","n","y","n"],b:["n","n","n"],f:["y","n","y"],l:["n","n","n"],r:["n","n","n"],spot:[["f",0]]},"2 quinas","O caso mais longo: três Sunes, com o topo girado entre eles.",["Sune","U'","Sune","U2","Sune"],"R U2 R' U' R U' R' U R U R' U R U2 R' U")
+  );s.appendChild(ex);
+  label(s,"Não fecha? Confira");
+  tips(s,[
+    ["A cruz sumiu?","Depois de um Sune feito certo, a cruz amarela e as duas camadas de baixo sempre voltam inteiras. Se não voltaram, algum giro saiu trocado. Refaça a partir do passo 1."],
+    ["Nenhum U' no Sune","Todos os giros do topo vão para a esquerda. O erro mais comum é girar o topo para a direita sem perceber."],
+    ["U2 vale por dois","No fim, o topo gira duas vezes para a esquerda antes do último R'. Se girar só uma vez, o caso muda e não fecha."],
+    ["Quina na esquerda","O peixinho vai na frente-esquerda, o canto perto da mão esquerda. Na frente-direita, o Sune muda o caso sem resolver."],
+    ["Olhe antes de repetir","Cada Sune muda o caso. Conte as quinas e reposicione o topo antes de cada novo Sune."],
+    ["Mexa só o topo","Para posicionar, gire só a camada de cima. Se girar o cubo inteiro, a face da frente muda e a referência se perde."]
+  ]);
+  s.appendChild(doneEl("a2","Já decorei o Sune"));
+})();
+/* Step 3 */
+(function(){const s=document.getElementById("s3");
+  head(s,"3","As quinas no lugar","Objetivo: cada quina na posição certa, com as cores laterais combinando.");
+  label(s,"Procure os faróis");
+  const c=document.createElement("div");c.className="cases";
+  c.append(
+    caseEl({top:Array(9).fill(y),b:["o",q,"o"],f:["g",q,"b"],l:["b",q,"r"],r:["g",q,"r"],spot:[["b",0],["b",2]]},"Faróis atrás","Duas quinas da mesma cor no mesmo lado. Gire o topo até elas ficarem atrás."),
+    caseEl({top:Array(9).fill(y),b:["g",q,"b"],f:["g",q,"b"],l:["o",q,"r"],r:["o",q,"r"]},"Sem faróis","Faça o algoritmo uma vez, em qualquer posição. Os faróis aparecem.")
+  );s.appendChild(c);
+  label(s,"O algoritmo: <span class=\"code\">R' F R' B2 R F' R' B2 R2</span>");
+  s.appendChild(algHTML([["R' F R'","desce, frente horário, desce"],["B2","trás meia-volta"],["R F' R'","sobe, frente anti-horário, desce"],["B2 R2","duas meias-voltas"]]));
+  tips(s,[["B2 é meia-volta","Gire a face de trás duas vezes, para qualquer lado. Na meia-volta, os dois sentidos dão no mesmo."],["Ajuste no final","Se as quinas ficaram certas entre si mas fora do lugar, gire só o topo até as cores encaixarem. Se os quatro lados já têm faróis, pule o algoritmo e faça só esse ajuste."]]);
+  s.appendChild(doneEl("a3","Já decorei o passo 3"));
+})();
+/* Step 4 */
+(function(){const s=document.getElementById("s4");
+  head(s,"4","A dança dos meios","Objetivo: três meios trocam de lugar em roda. Com as quinas encaixadas, vire o cubo inteiro (amarelo em cima) até a face já completa ficar atrás.");
+  label(s,"Compare o meio da frente com as quinas das laterais: a cor dele diz para onde ele quer ir");
+  const c=document.createElement("div");c.className="cases";
+  c.append(
+    caseEl({top:Array(9).fill(y),b:["b","b","b"],f:["g","o","g"],r:["o","r","o"],l:["r","g","r"],cycle:["f","r","l"],spot:[["f",1]]},"Anti-horário","O meio da frente tem a cor das quinas da direita (aqui, laranja): ele quer ir para a direita."),
+    caseEl({top:Array(9).fill(y),b:["b","b","b"],f:["g","r","g"],l:["r","o","r"],r:["o","g","o"],cycle:["f","l","r"],spot:[["f",1]]},"Horário","O meio da frente tem a cor das quinas da esquerda (aqui, vermelho): ele quer ir para a esquerda.")
+  );s.appendChild(c);
+  label(s,"Anti-horário: <span class=\"code\">R U' R U R U R U' R' U' R2</span>");
+  s.appendChild(algHTML([["R U' R U","sobe, direita, sobe, esquerda"],["R U R U'","sobe, esquerda, sobe, direita"],["R' U' R2","desce, direita, meia-volta"]]));
+  label(s,"Horário: <span class=\"code\">R2 U R U R' U' R' U' R' U R'</span>");
+  s.appendChild(algHTML([["R2 U R U","meia-volta, esquerda, sobe, esquerda"],["R' U' R' U'","desce, direita, desce, direita"],["R' U R'","desce, esquerda, desce"]]));
+  tips(s,[["Um é o espelho do outro","O horário é o anti-horário de trás para frente, com cada giro invertido. Decore um e o outro vem de brinde."],["Nenhuma face completa?","Faça qualquer um dos dois uma vez. Uma face fecha, e aí você segue a regra normal."],["A regra vale para qualquer cor","No desenho a face completa é a azul, então o verde fica na frente e o laranja à direita. Se a completa for a verde, o azul vem para a frente, com vermelho à direita e laranja à esquerda. Compare sempre com as quinas de cada lado."]]);
+  const row=document.createElement("div");row.style.cssText="display:flex;flex-wrap:wrap;gap:10px";
+  row.append(doneEl("a4","Já decorei o anti-horário"),doneEl("a5","Já decorei o horário"));s.appendChild(row);
+})();
+updateCount();
+
+document.getElementById("challenge").addEventListener("click",e=>{const on=e.currentTarget.getAttribute("aria-pressed")!=="true";
+  e.currentTarget.setAttribute("aria-pressed",on);e.currentTarget.textContent=on?"Modo desafio: ligado (toque para espiar)":"Modo desafio: esconder letras";
+  document.body.classList.toggle("challenge",on);});
+})();
+</script>
+<script>
+const MC=(function(){
+const PERM={"U":[6,3,0,7,4,1,8,5,2,17,16,15,20,19,18,12,13,14,9,10,11],"A1":[2,5,15,3,4,13,8,10,17,18,19,9,20,1,12,11,16,14,0,7,6],"SUNE":[14,5,6,1,4,3,18,7,9,20,19,12,2,13,15,8,10,11,17,16,0],"AP":[8,1,0,3,4,5,6,7,2,14,10,15,12,13,18,20,16,17,9,19,11],"UA":[0,1,2,5,4,7,6,3,8,9,10,11,12,16,14,15,19,17,18,13,20],"UB":[0,1,2,7,4,3,6,5,8,9,10,11,12,19,14,15,13,17,18,16,20],"T":[0,1,8,5,4,3,6,7,2,9,10,20,12,13,18,15,19,17,14,16,11]};
+const ALG={A1:"F R U R' U' F'",SUNE:"R U R' U R U2 R'",AP:"R' F R' B2 R F' R' B2 R2",UA:"R U' R U R U R U' R' U' R2",UB:"R2 U R U R' U' R' U' R' U R'"};
+const RING=["g","o","b","r"];
+const NAME={y:"amarelo",g:"verde",o:"laranja",b:"azul",r:"vermelho"};
+const OPP={g:"b",b:"g",o:"r",r:"o"};
+const PLUR={g:"verdes",o:"laranjas",b:"azuis",r:"vermelhos"};
+function cents(f){const i=RING.indexOf(f);return{f:f,r:RING[(i+1)%4],b:RING[(i+2)%4],l:RING[(i+3)%4]};}
+const ap=(s,p)=>p.map(i=>s[i]);
+function apply(st,op){
+  if(PERM[op]&&op!=="U")return{s:ap(st.s,PERM[op]),f:st.f};
+  const k=op[0],m=op.slice(1);
+  if(k==="U"||k==="y"){const n=m==="2"?2:m==="'"?3:1;let s=st.s,f=st.f;for(let i=0;i<n;i++){s=ap(s,PERM.U);if(k==="y")f=cents(f).r;}return{s:s,f:f};}
+  throw new Error("op "+op);
+}
+const SIDES={b:[9,10,11],f:[12,13,14],l:[15,16,17],r:[18,19,20]};
+const EDGES=[[1,10],[3,16],[5,19],[7,13]];
+const CORNERS=[[0,9,15],[2,11,18],[6,12,17],[8,14,20]];
+const eoDone=s=>[1,3,5,7].every(i=>s[i]==="y");
+const nCorners=s=>[0,2,6,8].filter(i=>s[i]==="y").length;
+const hl=s=>Object.keys(SIDES).filter(k=>s[SIDES[k][0]]===s[SIDES[k][2]]);
+function aligned(st){const c=cents(st.f),s=st.s;return Object.keys(SIDES).every(k=>s[SIDES[k][0]]===c[k]&&s[SIDES[k][2]]===c[k]);}
+const complete=(s,k)=>s[SIDES[k][0]]===s[SIDES[k][1]]&&s[SIDES[k][1]]===s[SIDES[k][2]];
+function solved(st){return st.s.slice(0,9).every(x=>x==="y")&&aligned(st)&&Object.keys(SIDES).every(k=>complete(st.s,k));}
+function findK(st,pred,kind){let c=st;for(let k=0;k<4;k++){if(pred(c))return k;c=apply(c,kind);}return -1;}
+const tok=(kind,k)=>k===0?null:k===1?kind:k===2?kind+"2":kind+"'";
+function uText(k){return k===1?"gire o topo para a esquerda (U)":k===2?"gire o topo meia-volta (U2)":"gire o topo para a direita (U')";}
+function yText(k){return k===1?"vire o cubo inteiro para a esquerda: a face da direita vem para a frente (y)":k===2?"vire o cubo inteiro meia-volta (y2)":"vire o cubo inteiro para a direita: a face da esquerda vem para a frente (y')";}
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+function act(step,name,pre,k,kind,algKey,text){
+  const ops=[];const p=tok(kind,k);if(p)ops.push(p);if(algKey)ops.push(algKey);
+  const moves=ops.map(o=>ALG[o]||o).join(" ");
+  return{step:step,name:name,ops:ops,moves:moves,alg:algKey?ALG[algKey]:null,text:text};
+}
+function next(st){
+  const s=st.s;
+  if(!eoDone(s)){
+    const e=[1,3,5,7].map(i=>s[i]==="y"),n=e.filter(Boolean).length;
+    if(n===0)return act(1,"Ponto",null,0,"U","A1","Só o centro amarelo. Faça o algoritmo em qualquer posição.");
+    if((e[0]&&e[3])||(e[1]&&e[2])){const k=findK(st,c=>c.s[3]==="y"&&c.s[5]==="y","U");
+      return act(1,"Linha",null,k,"U","A1",(k?cap(uText(k))+" para a linha ficar deitada. Depois faça o algoritmo.":"A linha já está deitada. Faça o algoritmo."));}
+    const k=findK(st,c=>c.s[1]==="y"&&c.s[3]==="y","U");
+    return act(1,"“L”",null,k,"U","A1",(k?cap(uText(k))+" para o L apontar para trás e para a esquerda. Depois faça o algoritmo.":"O L já aponta para trás e para a esquerda. Faça o algoritmo."));
+  }
+  const nc=nCorners(s);
+  if(nc!==4){
+    let pred,msg,name;
+    if(nc===1){pred=c=>c.s[6]==="y";name="Peixinho (1 quina)";msg="a quina amarela fica na frente-esquerda";}
+    else if(nc===0){pred=c=>c.s[17]==="y";name="Nenhuma quina";msg="a frente-esquerda fica com o amarelo olhando para a esquerda";}
+    else{pred=c=>c.s[12]==="y";name="Duas quinas";msg="a frente-esquerda fica com o amarelo olhando para você";}
+    const k=findK(st,pred,"U");
+    return act(2,name,null,k,"U","SUNE",k?cap(uText(k))+": assim "+msg+". Depois faça o Sune.":"Já está na posição: "+msg+". Faça o Sune.");
+  }
+  const h=hl(s);
+  if(h.length===0)return act(3,"Sem faróis",null,0,"U","AP","Nenhum lado tem faróis. Faça o algoritmo uma vez, em qualquer posição.");
+  if(h.length===1){const col=s[SIDES[h[0]][0]];const k=findK(st,c=>c.s[9]===c.s[11],"U");
+    return act(3,"Faróis "+PLUR[col],null,k,"U","AP",(k?cap(uText(k))+" para os faróis ficarem atrás. Depois faça o algoritmo.":"Os faróis já estão atrás. Faça o algoritmo."));}
+  if(!aligned(st)){const k=findK(st,aligned,"U");
+    return act(3,"Ajuste das quinas",null,k,"U",null,cap(uText(k))+" até as quinas combinarem com os centros. Sem algoritmo.");}
+  if(solved(st))return null;
+  const comp=Object.keys(SIDES).filter(k=>complete(s,k));
+  if(comp.length===0)return act(4,"Nenhuma face completa",null,0,"y","UA","Nenhum lado está completo. Faça o anti-horário uma vez e uma face fecha.");
+  const k=findK(st,c=>complete(c.s,"b"),"y");
+  const c2=k?apply(st,tok("y",k)):st, cc=cents(c2.f), fe=c2.s[13];
+  const pre=k?cap(yText(k))+", até o "+NAME[cents(st.f)[comp[0]]]+" (a face completa) ficar atrás. ":"A face completa já está atrás. ";
+  if(fe===cc.r)return act(4,"Anti-horário",null,k,"y","UA",pre+"O meio da frente é "+NAME[fe]+", a cor da direita: anti-horário.");
+  return act(4,"Horário",null,k,"y","UB",pre+"O meio da frente é "+NAME[fe]+", a cor da esquerda: horário.");
+}
+function plan(st){const out=[];let c=st;for(let i=0;i<14;i++){const a=next(c);if(!a)break;out.push(a);a.ops.forEach(o=>{c=apply(c,o);});}
+  return{actions:out,end:c,ok:solved(c)};}
+function rel(st){const c=cents(st.f),m={y:"Y"};m[c.f]="F";m[c.r]="R";m[c.b]="B";m[c.l]="L";return st.s.map(x=>m[x]).join("");}
+let SET=null;
+function reachable(){if(SET)return SET;const s0="YYYYYYYYYBBBFFFLLLRRR".split("");SET=new Set([s0.join("")]);let q=[s0];
+  const G=["U","A1","SUNE","AP","UA","T"];while(q.length){const nq=[];for(const s of q)for(const g of G){const n=ap(s,PERM[g]),k=n.join("");if(!SET.has(k)){SET.add(k);nq.push(n);}}q=nq;}return SET;}
+function check(st){
+  const s=st.s;const miss=s.filter((x,i)=>i!==4&&!x).length;
+  const cnt={y:0,g:0,o:0,b:0,r:0};s.forEach((x,i)=>{if(x&&i!==4)cnt[x]++;});
+  if(miss)return{ok:false,miss:miss,cnt:cnt,msg:"Faltam "+miss+" adesivo"+(miss>1?"s":"")+" para pintar."};
+  const over=Object.keys(cnt).filter(k=>cnt[k]!==(k==="y"?8:3));
+  if(over.length)return{ok:false,cnt:cnt,msg:"As contas não fecham: "+over.map(k=>NAME[k]+" aparece "+cnt[k]+"×, mas deveria aparecer "+(k==="y"?8:3)+"×").join("; ")+"."};
+  for(const [t,sd] of EDGES){if([s[t],s[sd]].filter(x=>x==="y").length!==1)return{ok:false,cnt:cnt,msg:"Um meio está com amarelo nos dois lados ou em nenhum. Cada meio de cima tem um amarelo só."};}
+  const es=EDGES.map(([t,sd])=>s[t]==="y"?s[sd]:s[t]);if(new Set(es).size!==4)return{ok:false,cnt:cnt,msg:"Dois meios ficaram com a mesma cor lateral. Confira os meios."};
+  for(const c of CORNERS){const v=c.map(i=>s[i]);if(v.filter(x=>x==="y").length!==1)return{ok:false,cnt:cnt,msg:"Uma quina está com amarelo em mais de um lado ou em nenhum. Cada quina tem um amarelo só."};
+    const o=v.filter(x=>x!=="y");if(o[0]===o[1]||OPP[o[0]]===o[1])return{ok:false,cnt:cnt,msg:"Uma quina ficou com "+NAME[o[0]]+" e "+NAME[o[1]]+" juntos, e essa peça não existe. Confira as quinas."};}
+  const cs=CORNERS.map(c=>c.map(i=>s[i]).filter(x=>x!=="y").sort().join(""));if(new Set(cs).size!==4)return{ok:false,cnt:cnt,msg:"Duas quinas ficaram com as mesmas cores. Confira as quinas."};
+  if(!reachable().has(rel(st)))return{ok:false,cnt:cnt,msg:"Essa combinação não sai de um cubo montado. O mais provável é uma cor trocada ao pintar ou uma quina pintada girada. Confira de novo."};
+  return{ok:true,cnt:cnt};
+}
+return{PERM:PERM,ALG:ALG,RING:RING,NAME:NAME,cents:cents,apply:apply,next:next,plan:plan,check:check,rel:rel,solved:solved,reachable:reachable};
+})();
+
+(function(){
+const HX={y:"#ffd92e",g:"#1dcc6c",o:"#ff761a",b:"#1c95eb",r:"#f02630"};
+const NAME=MC.NAME,$=id=>document.getElementById(id),KEY="topo-meu-cubo";
+const blank=f=>{const s=Array(21).fill(null);s[4]="y";return{s:s,f:f||"g"};};
+let st=blank("g"),brush="y";
+try{const v=JSON.parse(localStorage.getItem(KEY)||"null");if(v&&Array.isArray(v.s)&&v.s.length===21&&MC.RING.indexOf(v.f)>=0){st=v;st.s[4]="y";}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+const POS=[];for(let i=0;i<9;i++)POS[i]={r:3+Math.floor(i/3),c:3+i%3,k:"top"};
+for(let k=0;k<3;k++){POS[9+k]={r:2,c:3+k,k:"side"};POS[12+k]={r:6,c:3+k,k:"side"};POS[15+k]={r:3+k,c:2,k:"side"};POS[18+k]={r:3+k,c:6,k:"side"};}
+const ROWN=["de trás","do meio","da frente"],COLN=["esquerda","meio","direita"],DEP=["atrás","meio","frente"];
+function tileName(i){if(i<9)return"Topo, linha "+ROWN[Math.floor(i/3)]+", "+COLN[i%3];const sd=Math.floor((i-9)/3),k=(i-9)%3;
+  return["Lado de trás","Lado da frente","Lado esquerdo","Lado direito"][sd]+", "+(sd<2?COLN[k]:DEP[k]);}
+const board=$("board");
+const tiles=POS.map((p,i)=>{const b=document.createElement("button");b.type="button";b.className="tile "+p.k;b.style.gridRow=p.r;b.style.gridColumn=p.c;
+  if(i===4){b.disabled=true;b.setAttribute("aria-label","Centro do topo: amarelo");}
+  else b.addEventListener("click",()=>{st.s[i]=brush==="x"?null:brush;save();render();});
+  board.appendChild(b);return b;});
+const dots={};[["b",1,4],["f",7,4],["l",4,1],["r",4,7]].forEach(([k,r,c])=>{const d=document.createElement("span");d.className="cdot";d.style.gridRow=r;d.style.gridColumn=c;board.appendChild(d);dots[k]=d;});
+const pal=$("pal");
+[["y","amarelo"],["g","verde"],["o","laranja"],["b","azul"],["r","vermelho"],["x","borracha"]].forEach(([k,n])=>{const b=document.createElement("button");b.type="button";b.className="sw";b.dataset.k=k;b.setAttribute("aria-label","Pincel "+n);
+  if(k==="x")b.textContent="⌫";else b.style.background=HX[k];b.addEventListener("click",()=>{brush=k;paintPal();});pal.appendChild(b);});
+function paintPal(){pal.querySelectorAll(".sw").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.k===brush)));}
+const fr=$("fronts");
+MC.RING.forEach(k=>{const b=document.createElement("button");b.type="button";b.className="fc";b.dataset.k=k;b.innerHTML='<i style="background:'+HX[k]+'"></i>'+NAME[k];
+  b.addEventListener("click",()=>{st.f=k;save();render();});fr.appendChild(b);});
+$("myEx").addEventListener("click",()=>{st={s:"yyyyyyyyybbbgrgrorogo".split(""),f:"g"};save();render();});
+$("myClear").addEventListener("click",()=>{st=blank(st.f);save();render();});
+$("goMeu").addEventListener("click",()=>{$("meu").scrollIntoView({behavior:"smooth",block:"start"});});
+function render(){
+  tiles.forEach((b,i)=>{const v=st.s[i];b.classList.toggle("empty",!v);b.style.background=v?HX[v]:"";if(i!==4)b.setAttribute("aria-label",tileName(i)+": "+(v?NAME[v]:"sem cor"));});
+  const c=MC.cents(st.f);for(const k in dots){dots[k].style.background=HX[c[k]];dots[k].title="Centro "+(k==="b"?"de trás":k==="f"?"da frente":k==="l"?"da esquerda":"da direita")+": "+NAME[c[k]];}
+  fr.querySelectorAll(".fc").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.k===st.f)));
+  $("myFrontInfo").textContent="Com "+NAME[c.f]+" na frente: "+NAME[c.r]+" à direita, "+NAME[c.l]+" à esquerda, "+NAME[c.b]+" atrás. As bolinhas mostram esses centros.";
+  diagnose();
+}
+function diagnose(){
+  const d=$("diag"),chk=MC.check(st),cnt=chk.cnt;
+  let h='<div class="counts">'+["y","g","o","b","r"].map(k=>{const w=k==="y"?8:3;return'<span class="cnt'+(cnt[k]>w?" bad":"")+'" title="'+NAME[k]+'"><i style="background:'+HX[k]+'"></i>'+cnt[k]+"/"+w+"</span>";}).join("")+"</div>";
+  if(!chk.ok){h+=chk.miss?'<p class="hint">'+chk.msg+" Cada cor lateral aparece 3 vezes e o amarelo 8 (fora o centro).</p>":'<div class="warn">'+chk.msg+"</div>";d.innerHTML=h;return;}
+  const p=MC.plan(st);
+  if(!p.actions.length){d.innerHTML=h+'<div class="nextcard"><p class="eyebrow">Pronto</p><h3>Cubo resolvido! 🎉</h3><p>Nada a fazer aqui. Pode embaralhar e pintar de novo.</p></div>';return;}
+  const a=p.actions[0];
+  h+='<div class="nextcard"><p class="eyebrow">Agora · passo '+a.step+'</p><h3>'+a.name+"</h3><p>"+a.text+'</p><span class="code">'+a.moves+'</span><div class="acts"><button type="button" class="btn" id="myDone">✓ Já fiz</button></div></div>';
+  if(p.actions.length>1)h+='<div><p class="label">Depois disso</p><ol class="later">'+p.actions.slice(1).map(x=>"<li>Passo "+x.step+" · "+x.name+': <span class="m">'+x.moves+"</span></li>").join("")+"</ol></div>";
+  d.innerHTML=h;
+  $("myDone").addEventListener("click",()=>{a.ops.forEach(o=>{st=MC.apply(st,o);});save();render();});
+}
+paintPal();render();
+})();
+</script>
+
+
+</body>
+</html>
